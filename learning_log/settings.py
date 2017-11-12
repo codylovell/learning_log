@@ -132,3 +132,23 @@ LOGIN_URL = 'users/login/'
 BOOTSTRAP3 = {
     'include_jquery': True
 }
+
+#heroku settings
+cwd = os.getcwd()
+if cwd == '/app' or cwd[:4] == '/tmp':
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(default='postgres://localhost')
+    }
+    #Homor the 'X-Forawarded-Proto' headre for request.is_secure().
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    #Allow all host headers.
+    ALLOWED_HOSTS = ['*']
+
+    #static asset configuration
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    STATIC_ROOT = 'staticfiles'
+    STATICFILES_DIR = (
+        os.path.join(BASE_DIR, 'static')
+    )
